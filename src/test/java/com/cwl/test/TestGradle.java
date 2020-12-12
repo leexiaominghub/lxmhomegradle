@@ -9,6 +9,7 @@ public class TestGradle {
     @Test
     public void testPrint() {
         log.info("testPrint");
+        System.out.println("hello");
 
     }
 }
