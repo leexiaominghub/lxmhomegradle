@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group 'com.cwl'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+task l1 {println "l1"}
+
+task buildContracts(type: GradleBuild) {
+    tasks = ["l1"]
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
+
+    //导入slf4j依赖包，导入下面的两个包，其中logback-classic会导入slf4j包到项目的ExternalLibraries。 logback-core知识可以百度。
+    //compile('ch.qos.logback:logback-core:1.2.3')
+    testCompile('ch.qos.logback:logback-classic:1.2.3')
+
+    //导入slf4j包，不导入这个包会报错：SLF4J: Failed to load class
+    //"org.slf4j.impl.StaticLoggerBinder"
+
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+
+}
