@@ -1,11 +1,25 @@
+import jdk.internal.dynalink.linker.LinkerServices
+
 plugins {
     id 'java'
+    //id 'com.avast.gradle.docker-compose' version '0.6.6'
 }
+
+//apply plugin: 'docker-compose'
+//dockerCompose.isRequiredBy(test)
 
 group 'com.cwl'
 version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
+//sourceCompatibility = 1.8
+/*
+sourceSets {
+    lxmcomponent {
+        java {
+            srcDir project.file("${project.buildDir}/generated-integration-test-sources/contracts")
+        }
+    }
+}
+*/
 
 repositories {
     maven {
@@ -18,23 +32,24 @@ repositories {
     mavenCentral()
 }
 
+/*
 task l1 {println "l1"}
 
 task buildContracts(type: GradleBuild) {
     tasks = ["l1"]
 }
+*/
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 
-    //导入slf4j依赖包，导入下面的两个包，其中logback-classic会导入slf4j包到项目的ExternalLibraries。 logback-core知识可以百度。
-    //compile('ch.qos.logback:logback-core:1.2.3')
-    testCompile('ch.qos.logback:logback-classic:1.2.3')
+    implementation 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    //implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    implementation('ch.qos.logback:logback-classic:1.2.3')
 
-    //导入slf4j包，不导入这个包会报错：SLF4J: Failed to load class
-    //"org.slf4j.impl.StaticLoggerBinder"
-
-    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
-
+    testImplementation 'org.projectlombok:lombok:1.18.4'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
+    //testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    testImplementation('ch.qos.logback:logback-classic:1.2.3')
 }
