@@ -2,9 +2,16 @@ import jdk.internal.dynalink.linker.LinkerServices
 
 plugins {
     id 'java'
+    id 'idea'
     //id 'com.avast.gradle.docker-compose' version '0.6.6'
 }
 
+idea {
+    module {
+        sourceDirs += file("${projectDir}/build/generated/source/proto/main/java");
+        sourceDirs += file("${projectDir}/build/generated/source/proto/main/grpc");
+    }
+}
 //apply plugin: 'docker-compose'
 //dockerCompose.isRequiredBy(test)
 
@@ -20,6 +27,36 @@ sourceSets {
     }
 }
 */
+
+sourceSets {
+    integrationTest {
+        java {
+            srcDir project.file("${project.buildDir}/generated-integration-test-sources/contracts")
+        }
+    }
+
+}
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir project.file('src/integration-test/java')
+        }
+        resources.srcDir project.file('src/integration-test/resources')
+    }
+}
+
+afterEvaluate {
+    println "-----"
+    //sourceSets.forEach(println it)
+    println getSourceSets().findByName("integrationTest").java.srcDirs.forEach({println it})
+    //println sourceSets.forEach(a -> println a)
+    println project.sourceSets.integrationTest.runtimeClasspath.forEach({println it})
+    println "-----"
+    clean.targetFiles.forEach({println it})
+    println "-----"
+}
 
 repositories {
     maven {
